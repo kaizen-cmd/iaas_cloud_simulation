@@ -1,0 +1,76 @@
+<head>
+  <link
+    rel="stylesheet"
+    href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+    integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+    crossorigin="anonymous"
+  />
+  <title>EC2 Simulation</title>
+</head>
+<body class="p-5 w-75">
+  <div class="d-flex align-items-center">
+    <div>
+      <h1>Hi, {{ user.username }}</h1>
+    </div>
+    <div class="ml-auto">
+      <form action="{% url 'logout' %}" method="POST">
+        {% csrf_token %}
+        <input type="submit" value="Logout" class="btn btn-warning btn-md">
+      </form>
+    </div>
+  </div>
+  <div class="p-5">
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">ID</th>
+          <th scope="col">PORT</th>
+          <th scope="col">STOP</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for container in containers %}
+        <tr>
+          <th scope="row">{{ container.container_id }}</th>
+          <td>{{ container.port }}</td>
+          <td>
+            <form action="{% url 'stop-container' %}" method="POST">
+              {% csrf_token %}
+              <input
+                type="hidden"
+                value="{{container.container_id}}"
+                name="id"
+              />
+              <input type="submit" value="Stop" class="btn btn-danger btn-md" />
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <form action="{% url 'dashboard' %}" method="POST">
+    {% csrf_token %}
+    <input
+      type="submit"
+      value="Create Instance"
+      class="btn btn-success btn-md"
+    />
+  </form>
+
+  <script
+    src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"
+  ></script>
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+    integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+    crossorigin="anonymous"
+  ></script>
+  <script
+    src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+    integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+    crossorigin="anonymous"
+  ></script>
+</body>
